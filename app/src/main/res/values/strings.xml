@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">User Management</string>
+<!--Login-->
+    <string name="str_user_name">User Name</string>
+    <string name="str_password">Password</string>
+    <string name="str_login">Login</string>
+    <string name="str_back">Back</string>
+</resources>
