@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,21 +22,21 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
-import com.pocket.usermanagement.features.login.ui.LoginViewModel
 import com.pocket.usermanagement.main.MainActivity.Companion.KEEP_SPLASH
 import com.pocket.usermanagement.main.MainActivity.Companion.SPLASH_DELAY
 import com.pocket.usermanagement.ui.AppHeader
 import com.pocket.usermanagement.ui.navigation.AppNavigationController
 import com.pocket.usermanagement.ui.navigation.AppNavigationScreen
 import com.pocket.usermanagement.ui.theme.UserManagementTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val splashScreen = installSplashScreen()
         setUpSplashScreen(splashScreen)
-        val loginViewModel: LoginViewModel by viewModels()
         setContent {
             UserManagementApp()
 
@@ -67,7 +66,7 @@ fun UserManagementApp() {
         Scaffold(
             topBar = {
                 val currentRoute = navController.currentBackStackEntry?.destination?.route
-                Log.d("###","currentRoute $currentRoute")
+                Log.d("###", "currentRoute $currentRoute")
                 //val showBackButton = currentRoute != AppNavigationScreen.LOGIN.name
                 val showBackButton = if (currentRoute != null) {
                     currentRoute != AppNavigationScreen.LOGIN.name

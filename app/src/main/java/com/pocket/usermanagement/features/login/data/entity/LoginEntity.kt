@@ -1,6 +1,6 @@
 package com.pocket.usermanagement.features.login.data.entity
 
-import com.pocket.usermanagement.features.login.data.response.LoginResponse
+import com.pocket.usermanagement.features.login.data.model.LoginResponse
 
 data class LoginEntity(
     val id: Int?,
@@ -26,6 +26,6 @@ fun LoginResponse.mapLoginResponseToLoginEntity(): LoginEntity {
         image = this.image ?: "",
         accessToken = this.accessToken ?: "",
         refreshToken = this.refreshToken ?: "",
-        message = this.message?:""
+        message = this.message ?: ""
     )
 }

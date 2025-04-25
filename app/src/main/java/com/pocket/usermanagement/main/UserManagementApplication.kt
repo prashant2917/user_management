@@ -1,13 +1,9 @@
 package com.pocket.usermanagement.main
 
 import android.app.Application
-import com.pocket.usermanagement.di.UserManagementContainer
+import dagger.hilt.android.HiltAndroidApp
 
-class UserManagementApplication: Application() {
-  lateinit var userManagementContainer: UserManagementContainer
-    override fun onCreate() {
-        super.onCreate()
-        userManagementContainer = UserManagementContainer()
-    }
+@HiltAndroidApp
+class UserManagementApplication : Application() {
 
 }

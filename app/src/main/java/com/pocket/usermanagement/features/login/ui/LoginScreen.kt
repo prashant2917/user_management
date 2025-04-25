@@ -1,6 +1,5 @@
 package com.pocket.usermanagement.features.login.ui
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,31 +26,53 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.pocket.usermanagement.R
-import com.pocket.usermanagement.di.AppViewModelFactory
 import com.pocket.usermanagement.network.RequestBuilder
+import com.pocket.usermanagement.utils.AppLogger
+import com.pocket.usermanagement.utils.UiUtils
 
 
 @Composable
-fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = viewModel(factory = AppViewModelFactory.LoginFactory)) {
+fun LoginScreen(
+    navController: NavController,
+    loginViewModel: LoginViewModel
+) {
     val context = LocalContext.current
     var userName by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("")}
+    var password by remember { mutableStateOf("") }
     val showLoading by loginViewModel.mutableStateFlowLoading.collectAsState()
     var isButtonEnabled by remember { mutableStateOf(false) }
     val loginError by loginViewModel.mutableStateFlowLoginError.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val loginEntity by loginViewModel.mutableStateFlowLoginSuccess.collectAsState()
 
-    if(!loginError.isNullOrEmpty()) {
-        Toast.makeText(context, loginError, Toast.LENGTH_LONG).show()
+    AppLogger.d("LoginScreen", "loginError $loginError")
+
+    when {
+        !loginError.isNullOrEmpty() -> {
+            AppLogger.d("LoginScreen", "loginError not null")
+            UiUtils.ShowToast(context = context, message = loginError)
+        }
+
+        loginEntity != null -> {
+
+            UiUtils.ShowToast(
+                context = context,
+                message = stringResource(id = R.string.str_user_login_success)
+            )
+        }
+
+
     }
 
 
@@ -76,19 +97,23 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                 modifier = Modifier.padding(bottom = 32.dp)
             )
 
-            if(showLoading) CircularProgressIndicator()
+            if (showLoading) CircularProgressIndicator()
 
             OutlinedTextField(
                 value = userName,
-                onValueChange = { userName = it
-                                 isButtonEnabled = userName.isNotEmpty() && password.isNotEmpty()
-                                },
+                onValueChange = {
+                    userName = it
+                    isButtonEnabled = userName.isNotEmpty() && password.isNotEmpty()
+                },
                 label = { Text(stringResource(id = R.string.str_user_name)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
                 shape = RoundedCornerShape(8.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                )
             )
 
             OutlinedTextField(
@@ -103,16 +128,26 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                     .padding(bottom = 16.dp),
                 shape = RoundedCornerShape(8.dp),
                 visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
 
+                        keyboardController?.hide()
+                        val loginRequest = RequestBuilder.buildLoginRequest(userName, password)
+                        loginViewModel.doLogin(loginRequest)
+                    }
+                )
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = {
-                  val loginRequest = RequestBuilder.buildLoginRequest(userName, password)
-                   loginViewModel.doLogin(loginRequest)
+                    val loginRequest = RequestBuilder.buildLoginRequest(userName, password)
+                    loginViewModel.doLogin(loginRequest)
                 },
                 enabled = isButtonEnabled,
                 modifier = Modifier.fillMaxWidth()
@@ -120,8 +155,10 @@ fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel = v
                 Text(stringResource(id = R.string.str_login))
             }
         }
+
     }
 }
+
 
 
 
