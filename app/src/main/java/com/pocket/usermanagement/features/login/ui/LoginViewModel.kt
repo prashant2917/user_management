@@ -3,6 +3,7 @@ package com.pocket.usermanagement.features.login.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pocket.usermanagement.datastore.data.domain.DataStoreUseCase
 import com.pocket.usermanagement.features.login.data.entity.LoginEntity
 import com.pocket.usermanagement.features.login.data.model.LoginRequest
 import com.pocket.usermanagement.features.login.domain.LoginUseCase
@@ -15,7 +16,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase,
+    private val dataStoreUseCase: DataStoreUseCase
+) : ViewModel() {
 
     private val _mutableStateFlowLoginSuccess = MutableStateFlow<LoginEntity?>(null)
     var mutableStateFlowLoginSuccess = _mutableStateFlowLoginSuccess
@@ -26,7 +30,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     private val _mutableStateFlowLoading = MutableStateFlow(false)
     val mutableStateFlowLoading = _mutableStateFlowLoading
 
-    private fun resetValues() {
+    fun resetValues() {
         _mutableStateFlowLoginError.value = ""
         _mutableStateFlowLoginSuccess.value = null
         _mutableStateFlowLoading.value = false
@@ -55,6 +59,12 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
                     }
                 }
             }
+        }
+    }
+
+    fun saveUserDetails(loginEntity: LoginEntity?) {
+        viewModelScope.launch {
+            dataStoreUseCase.saveUserDetails(loginEntity)
         }
     }
 }

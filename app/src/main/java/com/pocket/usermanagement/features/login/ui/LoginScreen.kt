@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -47,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pocket.usermanagement.R
 import com.pocket.usermanagement.network.RequestBuilder
+import com.pocket.usermanagement.ui.navigation.AppNavigationScreen
 import com.pocket.usermanagement.utils.AppLogger
 import com.pocket.usermanagement.utils.UiUtils
 
@@ -74,11 +72,14 @@ fun LoginScreen(
         }
 
         loginEntity != null -> {
-
             UiUtils.ShowToast(
                 context = context,
                 message = stringResource(id = R.string.str_user_login_success)
             )
+            loginViewModel.saveUserDetails(loginEntity)
+            navController.navigate(AppNavigationScreen.HOME.name)
+            loginViewModel.resetValues()
+
         }
     }
 
@@ -147,7 +148,7 @@ fun LoginScreen(
                         loginViewModel.doLogin(loginRequest)
                     },
 
-                ),
+                    ),
                 trailingIcon = {
                     val image = if (passwordVisible)
                         ImageVector.vectorResource(R.drawable.ic_password_visible)
