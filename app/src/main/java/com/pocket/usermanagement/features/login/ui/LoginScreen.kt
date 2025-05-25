@@ -10,8 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -21,18 +26,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -55,7 +64,7 @@ fun LoginScreen(
     val loginError by loginViewModel.mutableStateFlowLoginError.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
     val loginEntity by loginViewModel.mutableStateFlowLoginSuccess.collectAsState()
-
+    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     AppLogger.d("LoginScreen", "loginError $loginError")
 
     when {
@@ -71,8 +80,6 @@ fun LoginScreen(
                 message = stringResource(id = R.string.str_user_login_success)
             )
         }
-
-
     }
 
 
@@ -127,7 +134,7 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
                 shape = RoundedCornerShape(8.dp),
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
@@ -138,8 +145,21 @@ fun LoginScreen(
                         keyboardController?.hide()
                         val loginRequest = RequestBuilder.buildLoginRequest(userName, password)
                         loginViewModel.doLogin(loginRequest)
+                    },
+
+                ),
+                trailingIcon = {
+                    val image = if (passwordVisible)
+                        ImageVector.vectorResource(R.drawable.ic_password_visible)
+                    else ImageVector.vectorResource(R.drawable.ic_password_invisible)
+
+                    // Localized description for accessibility services
+                    val description = if (passwordVisible) "Hide password" else "Show password"
+
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(imageVector = image, description)
                     }
-                )
+                }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
