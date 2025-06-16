@@ -18,10 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pocket.usermanagement.utils.AppLogger
 
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
     val userFullName by homeViewModel.mutableStateFlowUserFullName.collectAsState()
+    AppLogger.d("User Full Name $userFullName")
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background

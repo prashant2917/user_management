@@ -10,6 +10,7 @@ import com.pocket.usermanagement.features.login.domain.LoginUseCase
 import com.pocket.usermanagement.utils.AppLogger
 import com.pocket.usermanagement.utils.ResultEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -63,7 +64,8 @@ class LoginViewModel @Inject constructor(
     }
 
     fun saveUserDetails(loginEntity: LoginEntity?) {
-        viewModelScope.launch {
+        AppLogger.d("Save User Details")
+        viewModelScope.launch(Dispatchers.IO) {
             dataStoreUseCase.saveUserDetails(loginEntity)
         }
     }
