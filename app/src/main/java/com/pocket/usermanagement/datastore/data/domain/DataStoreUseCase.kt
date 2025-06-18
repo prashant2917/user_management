@@ -1,17 +1,24 @@
 package com.pocket.usermanagement.datastore.data.domain
 
 import com.pocket.usermanagement.datastore.data.DataStoreRepository
-import com.pocket.usermanagement.features.login.data.entity.LoginEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class DataStoreUseCase @Inject constructor(private val dataStoreRepository: DataStoreRepository) {
 
-    suspend fun saveUserDetails(loginEntity: LoginEntity?) {
-        dataStoreRepository.saveUserDetails(loginEntity)
+    suspend fun saveUserId(userId: String?) {
+        dataStoreRepository.saveUserId(userId)
     }
 
-    suspend fun getUserFullName(): Flow<String> {
-        return dataStoreRepository.getUserFullName()
+    suspend fun getUserId(): Flow<String> {
+        return dataStoreRepository.getUserId()
+    }
+
+    suspend fun setIsUserLogin(isUserLogin: Boolean) {
+        dataStoreRepository.setIsUserLogin(isUserLogin)
+    }
+
+    suspend fun getIsUserLogin(): Flow<Boolean> {
+        return dataStoreRepository.getIsUserLogin()
     }
 }

@@ -3,33 +3,78 @@ package com.pocket.usermanagement.features.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocket.usermanagement.datastore.data.domain.DataStoreUseCase
+import com.pocket.usermanagement.features.profile.data.entity.UserProfileResponseEntity
+import com.pocket.usermanagement.features.profile.domain.GetProfileUseCase
+import com.pocket.usermanagement.utils.AppLogger
+import com.pocket.usermanagement.utils.ResultEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val dataStoreUseCase: DataStoreUseCase) :
+class HomeViewModel @Inject constructor(
+    private val dataStoreUseCase: DataStoreUseCase,
+    private val getProfileUseCase: GetProfileUseCase
+) :
     ViewModel() {
-
     init {
-        getUserFullName()
+        getUserId()
     }
 
-    private val _mutableStateFlowUserFullName = MutableStateFlow<String?>("")
-    val mutableStateFlowUserFullName = _mutableStateFlowUserFullName.asStateFlow()
+    private val _mutableStateFlowUserId = MutableStateFlow<String>("")
+    val mutableStateFlowUserId = _mutableStateFlowUserId.asStateFlow()
 
-    fun getUserFullName() {
-        viewModelScope.launch {
-            dataStoreUseCase.getUserFullName().collect { fullName ->
-                _mutableStateFlowUserFullName.updateAndGet {
-                    fullName
+    private val _mutableStateFlowProfileSuccess = MutableStateFlow<UserProfileResponseEntity?>(null)
+    var mutableStateFlowProfileSuccess = _mutableStateFlowProfileSuccess
+
+    private val _mutableStateFlowProfileError = MutableStateFlow<String?>("")
+    val mutableStateFlowProfileError = _mutableStateFlowProfileError.asStateFlow()
+
+    private val _mutableStateFlowLoading = MutableStateFlow(false)
+    val mutableStateFlowLoading = _mutableStateFlowLoading
+
+    private fun getUserId() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreUseCase.getUserId().collect { userId ->
+                _mutableStateFlowUserId.value = userId
+            }
+        }
+    }
+
+    fun getUserProfile(userId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            resetValues()
+            getProfileUseCase.getUserProfile(userId).collect { resultEvent ->
+                when (resultEvent) {
+                    is ResultEvent.Error -> {
+                        AppLogger.d("Error ${resultEvent.exception.message}")
+                        _mutableStateFlowLoading.value = false
+                        _mutableStateFlowProfileError.value = resultEvent.exception.message
+                    }
+
+                    ResultEvent.Loading -> {
+                        AppLogger.d("Loading")
+                        _mutableStateFlowLoading.value = true
+                    }
+
+                    is ResultEvent.Success -> {
+                        AppLogger.d("Success ${resultEvent.data}")
+                        _mutableStateFlowLoading.value = false
+                        _mutableStateFlowProfileSuccess.value = resultEvent.data
+                    }
                 }
             }
         }
 
+    }
+
+    private fun resetValues() {
+        _mutableStateFlowProfileSuccess.value = null
+        _mutableStateFlowProfileError.value = ""
+        _mutableStateFlowLoading.value = false
     }
 
 }

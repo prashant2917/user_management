@@ -28,6 +28,7 @@ import com.pocket.usermanagement.ui.AppHeader
 import com.pocket.usermanagement.ui.navigation.AppNavigationController
 import com.pocket.usermanagement.ui.navigation.AppNavigationScreen
 import com.pocket.usermanagement.ui.theme.UserManagementTheme
+import com.pocket.usermanagement.utils.AppLogger
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,7 +58,6 @@ private fun setUpSplashScreen(splashScreen: SplashScreen) {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserManagementApp() {
     val navController = rememberNavController()
@@ -66,12 +66,12 @@ fun UserManagementApp() {
         Scaffold(
             topBar = {
                 val currentRoute = navController.currentBackStackEntry?.destination?.route
-                Log.d("###", "currentRoute $currentRoute")
-                //val showBackButton = currentRoute != AppNavigationScreen.LOGIN.name
+                AppLogger.d("currentRoute $currentRoute")
+
                 val showBackButton = if (currentRoute != null) {
                     currentRoute != AppNavigationScreen.LOGIN.name
                 } else false
-                Log.d("###", "showBackButton $showBackButton")
+               AppLogger.d("showBackButton $showBackButton")
 
                 AppHeader(
                     title = appBarTitle,

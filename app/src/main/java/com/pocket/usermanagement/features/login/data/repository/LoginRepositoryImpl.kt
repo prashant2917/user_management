@@ -19,7 +19,7 @@ class LoginRepositoryImpl @Inject constructor(private val userManagementApiServi
         return flow {
             emit(ResultEvent.Loading)
             val result = try {
-                val response = userManagementApiService.UserLogin(loginRequest)
+                val response = userManagementApiService.userLogin(loginRequest)
                 AppLogger.d("response from server $response")
                 if (response.isSuccessful && response.body() != null) {
 

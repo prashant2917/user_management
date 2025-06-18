@@ -8,22 +8,34 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pocket.usermanagement.utils.AppLogger
 
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
-    val userFullName by homeViewModel.mutableStateFlowUserFullName.collectAsState()
-    AppLogger.d("User Full Name $userFullName")
+    val userId = homeViewModel.mutableStateFlowUserId.collectAsState()
+    AppLogger.d("HomeScreen", "userId ${userId.value}")
+    val userProfileResponseEntity by homeViewModel.mutableStateFlowProfileSuccess.collectAsState()
+    val userProfileError by homeViewModel.mutableStateFlowProfileError.collectAsState()
+    val isLoading by homeViewModel.mutableStateFlowLoading.collectAsState()
+
+    LaunchedEffect(key1 = userId) {
+        // Ensure userId is valid before making the API call
+        if (userId.value.isNotEmpty()) { // Or any other validation like userId != null
+            AppLogger.d(
+                "HomeScreen",
+                "LaunchedEffect triggered. Fetching profile for userId: $userId"
+            )
+            homeViewModel.getUserProfile(userId.value)
+        }
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -35,15 +47,7 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = if (userFullName.isNullOrEmpty()) "Welcome buddy" else "Welcome $userFullName",
-                style = TextStyle(
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                ),
-                modifier = Modifier.padding(bottom = 32.dp)
-            )
+            Text(text = userProfileResponseEntity?.username.toString())
         }
     }
 }

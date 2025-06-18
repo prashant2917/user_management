@@ -63,10 +63,15 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun saveUserDetails(loginEntity: LoginEntity?) {
-        AppLogger.d("Save User Details")
+    fun setIsUserLogin(isUserLogin: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            dataStoreUseCase.saveUserDetails(loginEntity)
+            dataStoreUseCase.setIsUserLogin(isUserLogin)
+        }
+    }
+
+    fun saveUserId(userId : String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreUseCase.saveUserId(userId)
         }
     }
 }

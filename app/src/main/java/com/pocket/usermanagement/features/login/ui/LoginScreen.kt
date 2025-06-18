@@ -76,7 +76,8 @@ fun LoginScreen(
                 context = context,
                 message = stringResource(id = R.string.str_user_login_success)
             )
-            loginViewModel.saveUserDetails(loginEntity)
+            loginViewModel.saveUserId(loginEntity?.id.toString())
+            loginViewModel.setIsUserLogin(true)
             navController.navigate(AppNavigationScreen.HOME.name)
             loginViewModel.resetValues()
 
