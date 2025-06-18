@@ -1,41 +1,34 @@
 package com.pocket.usermanagement.features.profile.data.repository
 
-import com.pocket.usermanagement.features.profile.data.entity.UserProfileResponseEntity
-import com.pocket.usermanagement.features.profile.data.entity.mapUserProfileResponseToUserProfileResponseEntity
-import com.pocket.usermanagement.network.ApiError
+import com.pocket.usermanagement.features.profile.data.entity.UserProfileEntity
+import com.pocket.usermanagement.features.profile.data.entity.mapUserProfileResponseToUserProfileEntity
 import com.pocket.usermanagement.network.UserManagementApiService
 import com.pocket.usermanagement.utils.AppLogger
-import com.pocket.usermanagement.utils.JsonUtils
 import com.pocket.usermanagement.utils.ResultEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(private val userManagementApiService: UserManagementApiService) :
     ProfileRepository {
-    override suspend fun getUserProfile(userId: String): Flow<ResultEvent<UserProfileResponseEntity?>> {
+    override suspend fun getUserProfile(userId: String): Flow<ResultEvent<UserProfileEntity?>> {
         return flow {
             emit(ResultEvent.Loading)
             val result = try {
                 val response = userManagementApiService.getUserProfile(userId)
                 AppLogger.d("response from server $response")
-                if (response.isSuccessful && response.body() != null) {
+                ResultEvent.Success(response.mapUserProfileResponseToUserProfileEntity())
+            } catch (exception: HttpException) {
+                ResultEvent.Error(exception)
+            } catch (ioException: IOException) {
+                // Handle network errors (e.g., no internet connection)
+                ResultEvent.Error(ioException)
+            } catch (exception: Exception) {
+                // Handle other unexpected errors
+                ResultEvent.Error(exception)
 
-                    val responseBody = response.body()
-                    AppLogger.d("if  ResultEvent.Success ")
-                    ResultEvent.Success(responseBody?.mapUserProfileResponseToUserProfileResponseEntity())
-                } else {
-                    val errorResponse = response.errorBody()?.string()
-                    AppLogger.d("else  ResultEvent.Error ${response.errorBody()}")
-                    val apiError: ApiError? =
-                        JsonUtils.jsonToModelConverter(errorResponse, ApiError::class.java)
-                    response.errorBody()?.close()
-                    val errorMessage = apiError?.message
-                    ResultEvent.Error(Exception(errorMessage))
-                }
-            } catch (e: Exception) {
-                AppLogger.d("catch  ResultEvent.Error $e.message()}")
-                ResultEvent.Error(e)
             }
             emit(result)
         }

@@ -8,7 +8,7 @@ import com.pocket.usermanagement.features.profile.data.model.Crypto
 import com.pocket.usermanagement.features.profile.data.model.Hair
 import com.pocket.usermanagement.features.profile.data.model.UserProfileResponse
 
-data class UserProfileResponseEntity(
+data class UserProfileEntity(
     val address: AddressEntity?,
     val age: Int?,
     val bank: BankEntity?,
@@ -82,8 +82,8 @@ data class HairEntity(
 )
 
 //Response to Entity Mapper
-fun UserProfileResponse.mapUserProfileResponseToUserProfileResponseEntity(): UserProfileResponseEntity {
-    return UserProfileResponseEntity(
+fun UserProfileResponse.mapUserProfileResponseToUserProfileEntity(): UserProfileEntity {
+    return UserProfileEntity(
         address = this.address?.mapAddressToAddressEntity(),
         age = this.age ?: 0,
         bank = this.bank?.mapBankToBankEntity(),
@@ -167,7 +167,7 @@ fun Crypto.mapCryptoToCryptoEntity(): CryptoEntity {
     )
 }
 
-fun Hair.mapHairToHairEntity(): HairEntity? {
+fun Hair.mapHairToHairEntity(): HairEntity {
     return HairEntity(
         color = this.color ?: "",
         type = this.type ?: ""

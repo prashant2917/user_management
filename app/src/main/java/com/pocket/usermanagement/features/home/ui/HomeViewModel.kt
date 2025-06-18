@@ -3,7 +3,7 @@ package com.pocket.usermanagement.features.home.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocket.usermanagement.datastore.data.domain.DataStoreUseCase
-import com.pocket.usermanagement.features.profile.data.entity.UserProfileResponseEntity
+import com.pocket.usermanagement.features.profile.data.entity.UserProfileEntity
 import com.pocket.usermanagement.features.profile.domain.GetProfileUseCase
 import com.pocket.usermanagement.utils.AppLogger
 import com.pocket.usermanagement.utils.ResultEvent
@@ -27,11 +27,11 @@ class HomeViewModel @Inject constructor(
     private val _mutableStateFlowUserId = MutableStateFlow<String>("")
     val mutableStateFlowUserId = _mutableStateFlowUserId.asStateFlow()
 
-    private val _mutableStateFlowProfileSuccess = MutableStateFlow<UserProfileResponseEntity?>(null)
+    private val _mutableStateFlowProfileSuccess = MutableStateFlow<UserProfileEntity?>(null)
     var mutableStateFlowProfileSuccess = _mutableStateFlowProfileSuccess
 
-    private val _mutableStateFlowProfileError = MutableStateFlow<String?>("")
-    val mutableStateFlowProfileError = _mutableStateFlowProfileError.asStateFlow()
+    private val _mutableStateFlowProfileException = MutableStateFlow<Exception?>(null)
+    val mutableStateFlowProfileException = _mutableStateFlowProfileException.asStateFlow()
 
     private val _mutableStateFlowLoading = MutableStateFlow(false)
     val mutableStateFlowLoading = _mutableStateFlowLoading
@@ -52,7 +52,7 @@ class HomeViewModel @Inject constructor(
                     is ResultEvent.Error -> {
                         AppLogger.d("Error ${resultEvent.exception.message}")
                         _mutableStateFlowLoading.value = false
-                        _mutableStateFlowProfileError.value = resultEvent.exception.message
+                        _mutableStateFlowProfileException.value = resultEvent.exception
                     }
 
                     ResultEvent.Loading -> {
@@ -73,7 +73,7 @@ class HomeViewModel @Inject constructor(
 
     private fun resetValues() {
         _mutableStateFlowProfileSuccess.value = null
-        _mutableStateFlowProfileError.value = ""
+        _mutableStateFlowProfileException.value = null
         _mutableStateFlowLoading.value = false
     }
 

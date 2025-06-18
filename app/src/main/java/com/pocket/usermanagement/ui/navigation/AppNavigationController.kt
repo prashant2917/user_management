@@ -1,6 +1,8 @@
 package com.pocket.usermanagement.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -9,9 +11,16 @@ import com.pocket.usermanagement.features.home.ui.HomeScreen
 import com.pocket.usermanagement.features.login.ui.LoginScreen
 
 @Composable
-fun AppNavigationController(navController: NavHostController) {
+fun AppNavigationController(
+    navController: NavHostController,
+    appNavigationViewModel: AppNavigationViewModel
+) {
 
-    NavHost(navController = navController, startDestination = AppNavigationScreen.LOGIN.name) {
+    val isUserLogin by appNavigationViewModel.mutableStateFlowUserLogin.collectAsState()
+    NavHost(
+        navController = navController,
+        startDestination = if (isUserLogin) AppNavigationScreen.HOME.name else AppNavigationScreen.LOGIN.name
+    ) {
         composable(route = AppNavigationScreen.LOGIN.name) {
             LoginScreen(navController = navController, loginViewModel = hiltViewModel())
         }
@@ -27,7 +36,6 @@ enum class AppNavigationScreen {
     LOGIN,
     HOME,
     USER_PROFILE,
-    USER_POST,
-    USER_CART
+    USER_LIST
 }
 

@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.pocket.usermanagement.R
+import com.pocket.usermanagement.network.ApiErrorException
 import com.pocket.usermanagement.network.RequestBuilder
 import com.pocket.usermanagement.ui.navigation.AppNavigationScreen
 import com.pocket.usermanagement.utils.AppLogger
@@ -59,16 +60,20 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     val showLoading by loginViewModel.mutableStateFlowLoading.collectAsState()
     var isButtonEnabled by remember { mutableStateOf(false) }
-    val loginError by loginViewModel.mutableStateFlowLoginError.collectAsState()
+    val loginException by loginViewModel.mutableStateFlowLoginException.collectAsState()
+    var loginError by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val loginEntity by loginViewModel.mutableStateFlowLoginSuccess.collectAsState()
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
     AppLogger.d("LoginScreen", "loginError $loginError")
 
     when {
-        !loginError.isNullOrEmpty() -> {
+        loginException != null -> {
             AppLogger.d("LoginScreen", "loginError not null")
-            UiUtils.ShowToast(context = context, message = loginError)
+            loginError = ApiErrorException.getErrorMessage(context, loginException)
+            if (loginError.isNotEmpty()) {
+                UiUtils.ShowToast(context = context, message = loginError)
+            }
         }
 
         loginEntity != null -> {

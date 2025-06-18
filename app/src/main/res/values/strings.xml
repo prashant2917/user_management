@@ -6,4 +6,31 @@
     <string name="str_login">Login</string>
     <string name="str_back">Back</string>
     <string name="str_user_login_success">User Login Successfully</string>
+
+    <!--Network message-->
+<string name="str_common_network_error_message">"An unexpected error occurred"</string>
+<string name="str_no_internet_message">Network error: Please check your connection.</string>
+    <string name="user_profile_image_desc">User profile image</string>
+    <string name="not_available">N/A</string>
+    <string name="role_label">Role</string>
+    <string name="unknown">Unknown</string>
+
+    <!--Home screen profile details-->
+
+    <string name="role_desc_admin">Admin: Can modify users and their roles.</string>
+    <string name="role_desc_moderator">Moderator: Can view users.</string>
+    <string name="role_desc_user">User: Can only modify their own profile.</string>
+    <string name="role_desc_unknown">Role description not available.</string>
+
+    <string name="button_view_edit_profile">View/Edit Profile</string>
+    <string name="button_modify_users">Modify Users</string>
+    <string name="button_view_users">View Users</string>
+
+
+    <string name="home_title">Home</string>
+    <string name="welcome_user">Welcome, %1$s!</string>
+    <string name="loading_profile">Loading profile…</string>
+    <string name="error_loading_profile">Error loading profile: %1$s</string>
+    <string name="user_id_not_available">User ID not available to load profile.</string>
+
 </resources>

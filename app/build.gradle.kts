@@ -77,6 +77,8 @@ dependencies {
     ksp(libs.com.google.hilt.android.compiler)
     implementation(libs.androidx.hilt.hilt.navigation.compose)
     implementation(libs.androidx.datastore.datastore.preferences)
+    implementation(libs.io.coil.kt.coil3.coil.compose)
+    implementation(libs.io.coil.kt.coil3.coil.network.okhttp)
 
 
     testImplementation(libs.junit)

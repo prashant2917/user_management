@@ -25,14 +25,14 @@ class LoginViewModel @Inject constructor(
     private val _mutableStateFlowLoginSuccess = MutableStateFlow<LoginEntity?>(null)
     var mutableStateFlowLoginSuccess = _mutableStateFlowLoginSuccess
 
-    private val _mutableStateFlowLoginError = MutableStateFlow<String?>("")
-    val mutableStateFlowLoginError = _mutableStateFlowLoginError.asStateFlow()
+    private val _mutableStateFlowLoginException = MutableStateFlow<Exception?>(null)
+    val mutableStateFlowLoginException = _mutableStateFlowLoginException.asStateFlow()
 
     private val _mutableStateFlowLoading = MutableStateFlow(false)
     val mutableStateFlowLoading = _mutableStateFlowLoading
 
     fun resetValues() {
-        _mutableStateFlowLoginError.value = ""
+        _mutableStateFlowLoginException.value = null
         _mutableStateFlowLoginSuccess.value = null
         _mutableStateFlowLoading.value = false
     }
@@ -50,7 +50,8 @@ class LoginViewModel @Inject constructor(
                     is ResultEvent.Error -> {
                         AppLogger.d("Error ${resultEvent.exception.message}")
                         _mutableStateFlowLoading.value = false
-                        _mutableStateFlowLoginError.value = resultEvent.exception.message
+                        _mutableStateFlowLoginException.value = resultEvent.exception
+
                     }
 
                     is ResultEvent.Success -> {
@@ -69,7 +70,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun saveUserId(userId : String?) {
+    fun saveUserId(userId: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreUseCase.saveUserId(userId)
         }
