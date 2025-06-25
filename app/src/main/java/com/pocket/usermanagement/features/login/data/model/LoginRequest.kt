@@ -1,13 +1,14 @@
 package com.pocket.usermanagement.features.login.data.model
-import com.google.gson.annotations.SerializedName
-import androidx.annotation.Keep
 
-@Keep
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class LoginRequest(
-    @SerializedName("username")
+    @SerialName("username")
     val username: String?,
-    @SerializedName("password")
+    @SerialName("password")
     val password: String?,
-    @SerializedName("expiresInMins")
+    @SerialName("expiresInMins")
     val expiresInMins: Int? = 30
 )

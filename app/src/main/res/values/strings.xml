@@ -22,9 +22,10 @@
     <string name="role_desc_user">User: Can only modify their own profile.</string>
     <string name="role_desc_unknown">Role description not available.</string>
 
-    <string name="button_view_edit_profile">View/Edit Profile</string>
-    <string name="button_modify_users">Modify Users</string>
-    <string name="button_view_users">View Users</string>
+    <string name="str_view_edit_profile">View/Edit Profile</string>
+    <string name="str_modify_users">View/Modify Users</string>
+    <string name="str_view_users">View Users</string>
+    <string name="str_add_user">Add User</string>
 
 
     <string name="home_title">Home</string>
@@ -32,5 +33,14 @@
     <string name="loading_profile">Loading profile…</string>
     <string name="error_loading_profile">Error loading profile: %1$s</string>
     <string name="user_id_not_available">User ID not available to load profile.</string>
+
+  <!--  Profile screen -->
+    <string name="profile_screen_title">Profile</string>
+    <string name="user_list_title">User List</string>
+    <string name="change_profile_image_desc">Change profile description\n</string>
+    <string name="tap_to_edit_section">Tap to edit section</string>
+    <string name="section_completed_desc">Section Completed</string>
+    <string name="edit_section_desc">Edit Section</string>
+    <string name="basic_details">Basic Details</string>
 
 </resources>

@@ -14,18 +14,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.pocket.usermanagement.main.MainActivity.Companion.KEEP_SPLASH
 import com.pocket.usermanagement.main.MainActivity.Companion.SPLASH_DELAY
 import com.pocket.usermanagement.ui.AppHeader
 import com.pocket.usermanagement.ui.navigation.AppNavigationController
-import com.pocket.usermanagement.ui.navigation.AppNavigationScreen
+import com.pocket.usermanagement.ui.navigation.getScreenTitle
+import com.pocket.usermanagement.ui.navigation.noBackButtonRoutes
 import com.pocket.usermanagement.ui.theme.UserManagementTheme
 import com.pocket.usermanagement.utils.AppLogger
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,17 +61,19 @@ private fun setUpSplashScreen(splashScreen: SplashScreen) {
 @Composable
 fun UserManagementApp() {
     val navController = rememberNavController()
-    val appBarTitle by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
     UserManagementTheme {
         Scaffold(
             topBar = {
-                val currentRoute = navController.currentBackStackEntry?.destination?.route
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+                val appBarTitle = currentRoute.getScreenTitle(context)
                 AppLogger.d("currentRoute $currentRoute")
 
-                val showBackButton = if (currentRoute != null) {
-                    currentRoute != AppNavigationScreen.LOGIN.name
-                } else false
-               AppLogger.d("showBackButton $showBackButton")
+                val showBackButton =
+                    currentRoute != null && currentRoute !in noBackButtonRoutes && navController.previousBackStackEntry != null
+                AppLogger.d("showBackButton $showBackButton")
 
                 AppHeader(
                     title = appBarTitle,
@@ -88,9 +91,13 @@ fun UserManagementApp() {
                 color = MaterialTheme.colorScheme.background
             ) {
                 //content here
-                AppNavigationController(navController = navController, appNavigationViewModel = hiltViewModel())
+                AppNavigationController(
+                    navController = navController,
+                    appNavigationViewModel = hiltViewModel()
+                )
             }
         }
 
     }
+
 }

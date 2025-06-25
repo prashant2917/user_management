@@ -134,7 +134,7 @@ fun UserProfileCard(
                     onClick = { navController.navigate(AppNavigationScreen.USER_PROFILE.name) }, // Assuming profile screen takes userId
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = stringResource(R.string.button_view_edit_profile))
+                    Text(text = stringResource(R.string.str_view_edit_profile))
                 }
 
                 // Role-Specific Buttons
@@ -144,7 +144,14 @@ fun UserProfileCard(
                             onClick = { navController.navigate(AppNavigationScreen.USER_LIST.name) }, // Navigate to user list
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(text = stringResource(R.string.button_modify_users))
+                            Text(text = stringResource(R.string.str_modify_users))
+                        }
+
+                        Button(
+                            onClick = { navController.navigate(AppNavigationScreen.USER_LIST.name) }, // Navigate to user list
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(text = stringResource(R.string.str_add_user))
                         }
                     }
 
@@ -153,7 +160,7 @@ fun UserProfileCard(
                             onClick = { navController.navigate(AppNavigationScreen.USER_LIST.name) }, // Navigate to user list
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            Text(text = stringResource(R.string.button_view_users))
+                            Text(text = stringResource(R.string.str_view_users))
                         }
                     }
                     // User role has no additional button here as per requirements

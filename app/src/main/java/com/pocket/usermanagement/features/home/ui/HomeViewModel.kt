@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.pocket.usermanagement.datastore.data.domain.DataStoreUseCase
 import com.pocket.usermanagement.features.profile.data.entity.UserProfileEntity
 import com.pocket.usermanagement.features.profile.domain.GetProfileUseCase
+import com.pocket.usermanagement.main.ApplicationDataSource
 import com.pocket.usermanagement.utils.AppLogger
 import com.pocket.usermanagement.utils.ResultEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -75,6 +76,11 @@ class HomeViewModel @Inject constructor(
         _mutableStateFlowProfileSuccess.value = null
         _mutableStateFlowProfileException.value = null
         _mutableStateFlowLoading.value = false
+    }
+
+    fun saveUserProfile(userProfileEntity: UserProfileEntity?) {
+
+        ApplicationDataSource.setUserProfileEntity(userProfileEntity)
     }
 
 }

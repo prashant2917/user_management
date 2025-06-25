@@ -8,7 +8,6 @@ data class LoginEntity(
     val email: String?,
     val accessToken: String?,
     val refreshToken: String?,
-    val message: String?
 )
 
 fun LoginResponse.mapLoginResponseToLoginEntity(): LoginEntity {
@@ -18,6 +17,6 @@ fun LoginResponse.mapLoginResponseToLoginEntity(): LoginEntity {
         email = this.email ?: "",
         accessToken = this.accessToken ?: "",
         refreshToken = this.refreshToken ?: "",
-        message = this.message ?: ""
-    )
+
+        )
 }

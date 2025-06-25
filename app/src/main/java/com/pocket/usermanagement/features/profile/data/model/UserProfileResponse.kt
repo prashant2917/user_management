@@ -1,135 +1,136 @@
 package com.pocket.usermanagement.features.profile.data.model
 
 
-import androidx.annotation.Keep
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+
+@Serializable
 data class UserProfileResponse(
-    @SerializedName("address")
+    @SerialName("address")
     val address: Address?,
-    @SerializedName("age")
+    @SerialName("age")
     val age: Int?,
-    @SerializedName("bank")
+    @SerialName("bank")
     val bank: Bank?,
-    @SerializedName("birthDate")
+    @SerialName("birthDate")
     val birthDate: String?,
-    @SerializedName("bloodGroup")
+    @SerialName("bloodGroup")
     val bloodGroup: String?,
-    @SerializedName("company")
+    @SerialName("company")
     val company: Company?,
-    @SerializedName("crypto")
+    @SerialName("crypto")
     val crypto: Crypto?,
-    @SerializedName("ein")
+    @SerialName("ein")
     val ein: String?,
-    @SerializedName("email")
+    @SerialName("email")
     val email: String?,
-    @SerializedName("eyeColor")
+    @SerialName("eyeColor")
     val eyeColor: String?,
-    @SerializedName("firstName")
+    @SerialName("firstName")
     val firstName: String?,
-    @SerializedName("gender")
+    @SerialName("gender")
     val gender: String?,
-    @SerializedName("hair")
+    @SerialName("hair")
     val hair: Hair?,
-    @SerializedName("height")
+    @SerialName("height")
     val height: Double?,
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int?,
-    @SerializedName("image")
+    @SerialName("image")
     val image: String?,
-    @SerializedName("ip")
+    @SerialName("ip")
     val ip: String?,
-    @SerializedName("lastName")
+    @SerialName("lastName")
     val lastName: String?,
-    @SerializedName("macAddress")
+    @SerialName("macAddress")
     val macAddress: String?,
-    @SerializedName("maidenName")
+    @SerialName("maidenName")
     val maidenName: String?,
-    @SerializedName("password")
+    @SerialName("password")
     val password: String?,
-    @SerializedName("phone")
+    @SerialName("phone")
     val phone: String?,
-    @SerializedName("role")
+    @SerialName("role")
     val role: String?,
-    @SerializedName("ssn")
+    @SerialName("ssn")
     val ssn: String?,
-    @SerializedName("university")
+    @SerialName("university")
     val university: String?,
-    @SerializedName("userAgent")
+    @SerialName("userAgent")
     val userAgent: String?,
-    @SerializedName("username")
+    @SerialName("username")
     val username: String?,
-    @SerializedName("weight")
+    @SerialName("weight")
     val weight: Double?
 )
 
-@Keep
+@Serializable
 data class Address(
-    @SerializedName("address")
+    @SerialName("address")
     val address: String?,
-    @SerializedName("city")
+    @SerialName("city")
     val city: String?,
-    @SerializedName("coordinates")
+    @SerialName("coordinates")
     val coordinates: Coordinates?,
-    @SerializedName("country")
+    @SerialName("country")
     val country: String?,
-    @SerializedName("postalCode")
+    @SerialName("postalCode")
     val postalCode: String?,
-    @SerializedName("state")
+    @SerialName("state")
     val state: String?,
-    @SerializedName("stateCode")
+    @SerialName("stateCode")
     val stateCode: String?
 )
 
-@Keep
+@Serializable
 data class Bank(
-    @SerializedName("cardExpire")
+    @SerialName("cardExpire")
     val cardExpire: String?,
-    @SerializedName("cardNumber")
+    @SerialName("cardNumber")
     val cardNumber: String?,
-    @SerializedName("cardType")
+    @SerialName("cardType")
     val cardType: String?,
-    @SerializedName("currency")
+    @SerialName("currency")
     val currency: String?,
-    @SerializedName("iban")
+    @SerialName("iban")
     val iban: String?
 )
 
-@Keep
+@Serializable
 data class Company(
-    @SerializedName("address")
+    @SerialName("address")
     val address: Address?,
-    @SerializedName("department")
+    @SerialName("department")
     val department: String?,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String?,
-    @SerializedName("title")
+    @SerialName("title")
     val title: String?
 )
 
-@Keep
+@Serializable
 data class Coordinates(
-    @SerializedName("lat")
+    @SerialName("lat")
     val lat: Double?,
-    @SerializedName("lng")
+    @SerialName("lng")
     val lng: Double?
 )
 
-@Keep
+@Serializable
 data class Crypto(
-    @SerializedName("coin")
+    @SerialName("coin")
     val coin: String?,
-    @SerializedName("network")
+    @SerialName("network")
     val network: String?,
-    @SerializedName("wallet")
+    @SerialName("wallet")
     val wallet: String?
 )
 
-@Keep
+@Serializable
 data class Hair(
-    @SerializedName("color")
+    @SerialName("color")
     val color: String?,
-    @SerializedName("type")
+    @SerialName("type")
     val type: String?
 )

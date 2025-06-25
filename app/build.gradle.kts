@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 
 }
 
@@ -71,7 +72,8 @@ dependencies {
     implementation(libs.androidx.navigation.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.com.sqaureup.retrofit2.retrofit)
-    implementation(libs.com.squareup.retrofit2.converter.gson)
+    implementation(libs.org.jetbrains.kotlinx.serialization.json)
+    implementation(libs.com.jakewharton.retrofit.retrofit2.kotlinx.serialization.converter)
     implementation(libs.com.squareup.okhttp3.logging.interceptor)
     implementation(libs.com.google.hilt.android)
     ksp(libs.com.google.hilt.android.compiler)
@@ -79,7 +81,8 @@ dependencies {
     implementation(libs.androidx.datastore.datastore.preferences)
     implementation(libs.io.coil.kt.coil3.coil.compose)
     implementation(libs.io.coil.kt.coil3.coil.network.okhttp)
-
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.compose.material.icons.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

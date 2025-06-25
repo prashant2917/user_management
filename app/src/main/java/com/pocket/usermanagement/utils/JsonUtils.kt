@@ -1,19 +1,18 @@
 package com.pocket.usermanagement.utils
 
-import java.lang.Exception
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
+import kotlinx.serialization.json.Json
+import org.json.JSONException
 
 object JsonUtils {
 
 
-    fun <T> jsonToModelConverter(jsonString: String?, clazz: Class<T>): T? {
+    inline fun <reified T> jsonToModelConverter(jsonString: String?): T? {
         if (jsonString.isNullOrBlank()) {
             return null
         }
         return try {
-            Gson().fromJson(jsonString, clazz)
-        } catch (e: JsonSyntaxException) {
+            Json.decodeFromString<T>(jsonString)
+        } catch (e: JSONException) {
             // Handle JSON parsing error
             e.printStackTrace()
             null

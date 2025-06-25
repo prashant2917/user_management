@@ -18,7 +18,7 @@ object ApiErrorException {
             // Attempt to parse the errorBody if you expect a specific JSON structure for errors
             // For example, if your API returns errors like: {"error": "Invalid credentials"} or {"message": ...}
             val apiError: ApiError? =
-                JsonUtils.jsonToModelConverter(errorBody, ApiError::class.java)
+                JsonUtils.jsonToModelConverter(errorBody)
 
             if (apiError?.message != null && apiError.message.isNotEmpty()) {
                 errorMessage = apiError.message
@@ -27,8 +27,8 @@ object ApiErrorException {
         return errorMessage
     }
 
-   fun getErrorMessage(context: Context,exception:Exception?): String {
-       return when (exception) {
+    fun getErrorMessage(context: Context, exception: Exception?): String {
+        return when (exception) {
             is HttpException -> getRetrofitHttpExceptionMessage(exception)
             is IOException -> context.getString(R.string.str_no_internet_message)
             else -> context.getString(R.string.str_common_network_error_message)

@@ -56,6 +56,10 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
 
             }
         }
+
+        userProfileResponseEntity != null -> {
+            homeViewModel.saveUserProfile(userProfileResponseEntity)
+        }
     }
 
     Surface(
@@ -98,6 +102,7 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
                         userProfile = userProfileResponseEntity,
                         navController = navController
                     )
+
 
                 }
 
