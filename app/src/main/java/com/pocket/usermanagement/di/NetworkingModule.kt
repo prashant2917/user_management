@@ -1,5 +1,7 @@
 package com.pocket.usermanagement.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.pocket.usermanagement.BuildConfig
 import com.pocket.usermanagement.network.UserManagementApiService
@@ -7,6 +9,7 @@ import com.pocket.usermanagement.utils.UserManagementConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -48,5 +51,10 @@ class NetworkingModule {
     @Singleton
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
+    }
+
+    @Provides
+    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager {
+        return context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 }

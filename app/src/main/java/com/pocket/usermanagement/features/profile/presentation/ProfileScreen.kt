@@ -1,12 +1,9 @@
-package com.pocket.usermanagement.features.profile.ui
+package com.pocket.usermanagement.features.profile.presentation
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,22 +12,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,6 +37,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
@@ -51,16 +52,41 @@ fun ProfileScreen(
     navController: NavController,
     profileViewModel: ProfileViewModel
 ) {
-    val userProfile by profileViewModel.userProfile.collectAsState()
-
-    //val isProfileUpdatable by profileViewModel.isProfileUpdatable.collectAsState()
+    val userProfile by profileViewModel.userProfile.collectAsState(null)
+    var firstName by remember { mutableStateOf("") }
+    var maidenName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var birthDate by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    var weight by remember { mutableStateOf("") }
+    var isButtonEnabled by remember { mutableStateOf(true) }
     val context = LocalContext.current
+
 
     // Reload profile data when the screen becomes visible,
     // in case it was updated in a sub-screen.
     LaunchedEffect(Unit) {
         profileViewModel.getUserProfile()
+
     }
+
+    LaunchedEffect(userProfile) {
+        userProfile?.let { profile ->
+            firstName = profile.firstName ?: ""
+            maidenName = profile.maidenName ?: ""
+            lastName = profile.lastName ?: ""
+            email = profile.email ?: ""
+            birthDate = profile.birthDate ?: ""
+            phone = profile.phone ?: ""
+            gender = profile.gender ?: ""
+            weight = profile.weight.toString()
+        }
+    }
+
+
+
 
     Column(
         modifier = Modifier
@@ -71,9 +97,40 @@ fun ProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ProfileHeader(userProfile = userProfile, onImageClick = { })
-        //ProfileSectionItem(stringResource(R.string.basic_details),)
-    }
+        ProfileTextField(
+            value = firstName,
+            label = stringResource(id = R.string.str_first_name),
+            onValueChange = {
+                firstName = it
+            },
+            keyboardType = KeyboardType.Text
+        )
+        ProfileTextField(
+            value = maidenName,
+            label = stringResource(id = R.string.str_maiden_name),
+            onValueChange = {
+                maidenName = it
+            },
+            keyboardType = KeyboardType.Text
+        )
+        ProfileTextField(
+            value = lastName,
+            label = stringResource(id = R.string.str_last_name),
+            onValueChange = {
+                lastName = it
+            },
+            keyboardType = KeyboardType.Text
+        )
 
+        ProfileTextField(
+            value = email,
+            label = stringResource(id = R.string.str_email),
+            onValueChange = {
+                email = it
+            },
+            keyboardType = KeyboardType.Email
+        )
+    }
 }
 
 
@@ -83,7 +140,7 @@ fun ProfileHeader(userProfile: UserProfileEntity?, onImageClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 32.dp, bottom = 16.dp)
+            .padding(16.dp)
     ) {
         Box(contentAlignment = Alignment.BottomEnd) {
             AsyncImage(
@@ -118,61 +175,31 @@ fun ProfileHeader(userProfile: UserProfileEntity?, onImageClick: () -> Unit) {
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
+
     }
 }
-
 
 @Composable
-fun ProfileSectionItem(
-    title: String,
-    details: String,
-    isFilled: Boolean, // To show a visual cue if the section is considered "filled"
-    onClick: () -> Unit
+fun ProfileTextField(
+    value: String,
+    label: String,
+    onValueChange: (String) -> Unit,
+    keyboardType: KeyboardType
 ) {
-    Card(
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clickable(onClick = onClick),
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = if (details.isNotBlank()) details else stringResource(R.string.tap_to_edit_section),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = if (details.isNotBlank()) LocalContentColor.current else MaterialTheme.colorScheme.outline
-                )
-            }
-            // Optional: Visual cue for filled status
-            if (isFilled) {
-                Icon(
-                    // painter = painterResource(id = R.drawable.ic_checkmark_circle), // Create this checkmark icon
-                    imageVector = Icons.Default.Done,
-                    contentDescription = stringResource(R.string.section_completed_desc),
-                    tint = MaterialTheme.colorScheme.primary, // Or Color.Green
-                    modifier = Modifier.size(24.dp)
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = stringResource(R.string.edit_section_desc),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
-    }
+            .padding(bottom = 16.dp),
+        shape = RoundedCornerShape(8.dp),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType,
+            imeAction = ImeAction.Next
+        )
+    )
 }
+
+
+

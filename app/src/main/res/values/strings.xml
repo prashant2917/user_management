@@ -42,5 +42,17 @@
     <string name="section_completed_desc">Section Completed</string>
     <string name="edit_section_desc">Edit Section</string>
     <string name="basic_details">Basic Details</string>
+    <string name="str_first_name">First name</string>
+    <string name="str_last_name">Last name</string>
+    <string name="str_maiden_name">Maiden name</string>
+    <string name="str_email">Email</string>
+    <string name="str_phone">Phone</string>
+    <string name="str_gender">Gender</string>
+
+
+    <!--common strings-->
+    <string name="str_dismiss">Dismiss</string>
+    <string name="str_proceed">Proceed</string>
+
 
 </resources>

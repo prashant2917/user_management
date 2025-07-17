@@ -1,4 +1,4 @@
-package com.pocket.usermanagement.features.home.ui
+package com.pocket.usermanagement.features.home.presentation
 
 
 import androidx.compose.foundation.layout.Arrangement

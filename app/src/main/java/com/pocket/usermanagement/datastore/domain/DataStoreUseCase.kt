@@ -1,4 +1,4 @@
-package com.pocket.usermanagement.datastore.data.domain
+package com.pocket.usermanagement.datastore.domain
 
 import com.pocket.usermanagement.datastore.data.DataStoreRepository
 import kotlinx.coroutines.flow.Flow

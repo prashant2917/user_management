@@ -5,13 +5,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.pocket.usermanagement.R
-import com.pocket.usermanagement.features.home.ui.HomeScreen
-import com.pocket.usermanagement.features.login.ui.LoginScreen
-import com.pocket.usermanagement.features.profile.ui.ProfileScreen
+import com.pocket.usermanagement.features.home.presentation.HomeScreen
+import com.pocket.usermanagement.features.login.presentation.LoginScreen
+import com.pocket.usermanagement.features.profile.presentation.ProfileScreen
+import com.pocket.usermanagement.utils.AppLogger
 
 @Composable
 fun AppNavigationController(
@@ -20,6 +23,15 @@ fun AppNavigationController(
 ) {
 
     val isUserLogin by appNavigationViewModel.mutableStateFlowUserLogin.collectAsState()
+
+    appNavigationViewModel.networkLiveData.observeForever { isConnected ->
+        if(isConnected) {
+            AppLogger.d("Network is connected")
+        }
+        else {
+            AppLogger.d("Network is not connected")
+        }
+    }
     NavHost(
         navController = navController,
         startDestination = if (isUserLogin) AppNavigationScreen.HOME.name else AppNavigationScreen.LOGIN.name

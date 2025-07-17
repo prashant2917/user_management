@@ -38,10 +38,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val splashScreen = installSplashScreen()
         setUpSplashScreen(splashScreen)
+
         setContent {
             UserManagementApp()
 
         }
+
+
     }
 
     companion object {

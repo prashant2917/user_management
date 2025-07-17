@@ -1,7 +1,8 @@
-package com.pocket.usermanagement.features.profile.data.repository
+package com.pocket.usermanagement.features.profile.domain
 
 import com.pocket.usermanagement.features.profile.data.entity.UserProfileEntity
 import com.pocket.usermanagement.features.profile.data.entity.mapUserProfileResponseToUserProfileEntity
+import com.pocket.usermanagement.features.profile.data.repository.ProfileRepository
 import com.pocket.usermanagement.network.UserManagementApiService
 import com.pocket.usermanagement.utils.AppLogger
 import com.pocket.usermanagement.utils.ResultEvent
