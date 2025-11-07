@@ -3,7 +3,7 @@ package com.pocket.usermanagement.features.profile.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pocket.usermanagement.features.profile.data.entity.UserProfileEntity
-import com.pocket.usermanagement.features.profile.data.repository.ProfileRepository
+import com.pocket.usermanagement.features.profile.domain.ProfileRepository
 import com.pocket.usermanagement.main.ApplicationDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

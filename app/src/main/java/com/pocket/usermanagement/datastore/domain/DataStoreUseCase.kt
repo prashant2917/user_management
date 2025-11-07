@@ -1,6 +1,6 @@
 package com.pocket.usermanagement.datastore.domain
 
-import com.pocket.usermanagement.datastore.data.DataStoreRepository
+import com.pocket.usermanagement.datastore.domain.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

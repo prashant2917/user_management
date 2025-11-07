@@ -44,12 +44,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.pocket.usermanagement.R
 import com.pocket.usermanagement.network.ApiErrorException
 import com.pocket.usermanagement.network.RequestBuilder
@@ -80,7 +83,7 @@ fun LoginScreen(
     LaunchedEffect(key1 = lifecycleOwner.lifecycle, key2 = loginViewModel.loginEventFlow) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
             launch {
-                loginViewModel.loginEventFlow.collectLatest { loginEvent ->
+                loginViewModel.loginEventFlow.collect { loginEvent ->
                     when (loginEvent) {
                         is LoginScreenEvent.LoginScreenSuccess -> {
                             snackBarHostState.showSnackbar(
@@ -223,3 +226,11 @@ fun LoginScreen(
         }
     }
 }
+
+@Preview
+@Composable
+fun PreviewLoginScreen() {
+   LoginScreen(navController = rememberNavController(), loginViewModel = hiltViewModel())
+}
+
+

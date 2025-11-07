@@ -3,6 +3,7 @@ package com.pocket.usermanagement.features.login.data.repository
 import com.pocket.usermanagement.features.login.data.entity.LoginEntity
 import com.pocket.usermanagement.features.login.data.entity.mapLoginResponseToLoginEntity
 import com.pocket.usermanagement.features.login.data.model.LoginRequest
+import com.pocket.usermanagement.features.login.domain.LoginRepository
 import com.pocket.usermanagement.network.UserManagementApiService
 import com.pocket.usermanagement.utils.AppLogger
 import com.pocket.usermanagement.utils.ResultEvent

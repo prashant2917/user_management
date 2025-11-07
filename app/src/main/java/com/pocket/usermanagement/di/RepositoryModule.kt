@@ -1,11 +1,11 @@
 package com.pocket.usermanagement.di
 
-import com.pocket.usermanagement.datastore.data.DataStoreRepository
-import com.pocket.usermanagement.datastore.domain.DataStoreRepositoryImpl
-import com.pocket.usermanagement.features.login.data.repository.LoginRepository
+import com.pocket.usermanagement.datastore.domain.DataStoreRepository
+import com.pocket.usermanagement.datastore.data.DataStoreRepositoryImpl
+import com.pocket.usermanagement.features.login.domain.LoginRepository
 import com.pocket.usermanagement.features.login.data.repository.LoginRepositoryImpl
-import com.pocket.usermanagement.features.profile.data.repository.ProfileRepository
-import com.pocket.usermanagement.features.profile.domain.ProfileRepositoryImpl
+import com.pocket.usermanagement.features.profile.domain.ProfileRepository
+import com.pocket.usermanagement.features.profile.data.repository.ProfileRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

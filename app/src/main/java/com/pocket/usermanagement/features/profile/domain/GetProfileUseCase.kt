@@ -1,6 +1,6 @@
 package com.pocket.usermanagement.features.profile.domain
 
-import com.pocket.usermanagement.features.profile.data.repository.ProfileRepository
+import com.pocket.usermanagement.features.profile.domain.ProfileRepository
 import javax.inject.Inject
 
 class GetProfileUseCase @Inject constructor(private val profileRepository: ProfileRepository) {

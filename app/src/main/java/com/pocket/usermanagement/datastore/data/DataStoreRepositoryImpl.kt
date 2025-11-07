@@ -1,10 +1,9 @@
-package com.pocket.usermanagement.datastore.domain
+package com.pocket.usermanagement.datastore.data
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import com.pocket.usermanagement.datastore.data.DataStoreRepository
-import com.pocket.usermanagement.datastore.data.DatastoreKeys
+import com.pocket.usermanagement.datastore.domain.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
